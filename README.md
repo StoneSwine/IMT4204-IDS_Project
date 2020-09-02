@@ -4,6 +4,7 @@
 ```bash
 cmake . 
 make
-./project
+./task_1-0
+./task_1-1
 ```
  
