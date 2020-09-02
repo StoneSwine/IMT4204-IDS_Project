@@ -8,3 +8,6 @@ make
 ./task_1-1
 ```
  
+## Quality assurance
+- [x] valgrind
+- [x] cppcheck
