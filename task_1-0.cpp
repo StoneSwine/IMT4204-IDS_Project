@@ -11,8 +11,9 @@ auto edSearch(const string &p, const string &T, uint64_t k = 2) {
     auto m = p.length() + 1, n = T.length() + 1;
     vector<int> ret;
     // Initialise the matrix
-    vector<std::vector<int> > M(m, vector<int>(n)); // Defaults to zero initial value
+    int **M = new int *[m];
     for (int i = 0; i < m; ++i) {
+        M[i] = new int[n]{0};
         M[i][0] = i;
     }
 
@@ -42,13 +43,18 @@ auto edSearch(const string &p, const string &T, uint64_t k = 2) {
 #endif
 
     cout << // the size of the data
-         M.size() * M[0].size() * sizeof(int) +
+         m * n * sizeof(int) +
 
-         // the size of the inner vector objects
-         M.size() * sizeof M[0] +
+         // the size of the inner pointers / objects
+         m * sizeof M[0] +
 
-         // the size of the outer vector object
+         // the size of the outer pointer
          sizeof M << "B";
+
+    // Free memory
+    for (int i = 0; i < m; ++i)
+        delete[] M[i];
+    delete[] M;
 
     return ret;
 }

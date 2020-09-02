@@ -11,8 +11,8 @@ using namespace std;
 auto DPSearch(const string &p, const string &T, const int k) {
     auto m = p.size() + 1, n = T.size() + 1;
     vector<int> ret;
-    vector<int> C(m);
-    vector<int> Cpr(m);
+    int *C = new int[m];
+    int *Cpr = new int[m];
     // initialise the vectors
     for (int i = 0; i <= m; ++i) {
         C[i] = Cpr[i] = i;
@@ -35,12 +35,14 @@ auto DPSearch(const string &p, const string &T, const int k) {
     }
 
     cout << // the size of the data
-         C.size() * sizeof(int) +
+         m * sizeof(int) +
 
-         // the size of the vector object
-         sizeof C
-         << "B";
+         // the size of the outer pointer
+         sizeof C << "B";
 
+
+    delete[] C;
+    delete[] Cpr;
 
     return ret;
 }
