@@ -5,7 +5,9 @@
 
 using namespace std;
 
-/* Dynamic programming approach to approximate search */
+/* Dynamic programming approach to approximate search
+ * O(nm) complexity with (O2m) space
+ */
 auto DPSearch(const string &p, const string &T, const int k) {
     auto m = p.size() + 1, n = T.size() + 1;
     vector<int> ret;
@@ -16,12 +18,12 @@ auto DPSearch(const string &p, const string &T, const int k) {
         C[i] = Cpr[i] = i;
     }
 
-
+    // operations on columns
     for (int j = 1; j < n; ++j) {
         for (int i = 1; i < m; ++i) {
             if (p[i - 1] == T[j - 1]) { // match
                 Cpr[i] = C[i - 1];
-            } else {    //            substitution, deletion, insertion
+            } else {    //       substitution, deletion, insertion
                 Cpr[i] = (1 + min({C[i - 1], Cpr[i - 1], C[i]}));
             }
         }
@@ -31,6 +33,14 @@ auto DPSearch(const string &p, const string &T, const int k) {
         }
         swap(C, Cpr);
     }
+
+    cout << // the size of the data
+         C.size() * sizeof(int) +
+
+         // the size of the vector object
+         sizeof C
+         << "B";
+
 
     return ret;
 }
