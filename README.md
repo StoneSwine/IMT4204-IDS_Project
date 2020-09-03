@@ -4,8 +4,7 @@
 ```bash
 cmake . 
 make
-./task_1-0
-./task_1-1
+./task_1
 ```
  
 ## Quality assurance
