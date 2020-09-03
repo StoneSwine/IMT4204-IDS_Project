@@ -21,7 +21,7 @@ auto DPSearchWithFullMatrix(const string &p, const string &T, const int k) {
         M[i][0] = i;
     }
 
-    printf("[DPSWFM] Searching for '%s' in '%s'\n", T.c_str(), p.c_str());
+    printf("[DPSWFM]: Pattern --> %s\n", p.c_str());
 
     // Operations on matrix.
     for (int j = 1; j < n; ++j) {
@@ -49,7 +49,7 @@ auto DPSearchWithFullMatrix(const string &p, const string &T, const int k) {
 #endif
 
     //                        the size of the data + the size of the inner pointers + the size of the outer pointer
-    printf("[DPSWFM] Size of data-structure: %lu B\n", m * n * sizeof(int) + m * sizeof M[0] + sizeof M);
+    printf("[DPSWFM]: Size of data-structure: %lu B\n", m * n * sizeof(int) + m * sizeof M[0] + sizeof M);
 
     // Free memory
     for (int i = 0; i < m; ++i)
@@ -73,7 +73,7 @@ auto DPSearchWithOnlyColumns(const string &p, const string &T, const int k) {
         C[i] = Cpr[i] = i;
     }
 
-    printf("[DPSWOC] Searching for '%s' in '%s'\n", T.c_str(), p.c_str());
+    printf("[DPSWOC]: Pattern --> %s\n", p.c_str());
 
     // operations on columns
     for (int j = 1; j < n; ++j) {
@@ -92,7 +92,7 @@ auto DPSearchWithOnlyColumns(const string &p, const string &T, const int k) {
 
     }
     //                                                 the size of the data   + the size of the outer pointer
-    printf("[DPSWOC] Size of data-structure: %lu B\n", m * sizeof(int) + sizeof C);
+    printf("[DPSWOC]: Size of data-structure: %lu B\n", m * sizeof(int) + sizeof C);
 
     delete[] C;
     delete[] Cpr;
