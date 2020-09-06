@@ -3,10 +3,17 @@
 #include <algorithm>    // std::min
 #include <vector>
 
-using namespace std;
 
 // #define DEBUG = 0
 
+
+#ifdef DEBUG
+
+#include <iomanip>
+
+#endif
+
+using namespace std;
 
 /* Dynamic programming approach to approximate search
  * O(nm) complexity with O(mn) space
@@ -38,14 +45,26 @@ auto DPSearchWithFullMatrix(const string &p, const string &T, const int k) {
     }
 
 #ifdef DEBUG
-    cout << endl << "<DEBUG>" << endl;
+
+    cout << "[DEBUG]" << endl << "\t\t";
+    for (int i = 0; i < n; ++i) {
+        cout << setfill(' ') << setw(to_string(m).length()) << T[i] << " ";
+    }
+    cout << endl;
     for (int i = 0; i < m; ++i) {
+        if (i != 0) {
+            cout << "\t" << p[i - 1];
+        } else {
+            cout << "\t ";
+        }
+        cout << " ";
         for (int j = 0; j < n; ++j) {
-            cout << M[i][j] << ' ';
+            cout << setfill('0') << setw(to_string(m).length()) << M[i][j] << " ";
         }
         cout << endl;
     }
-    cout << "</DEBUG>" << endl;
+    cout << "[DEBUG]" << endl;
+
 #endif
 
     //                        the size of the data + the size of the inner pointers + the size of the outer pointer
@@ -101,8 +120,8 @@ auto DPSearchWithOnlyColumns(const string &p, const string &T, const int k) {
 }
 
 int main() {
-    string patterns[] = {"Annual", "Gral", "Neal", "ThisPatternIsWayTooDifferent"}; // Patterns (IDS DB)
-    string T = "annealing"; // Search string
+    string patterns[] = {"tuned", "ThisIsTooDifferent"}; // Patterns (IDS DB)
+    string T = "student"; // Search string
     printf("[MAIN] Starting search with full matrix in memory\n");
     printf("[MAIN] Search string: %s\n", T.c_str());
     for (const auto &p : patterns) {
@@ -111,7 +130,7 @@ int main() {
             printf("[MAIN]: ed(%s,%s)=%lu\n", p.c_str(), T.c_str(), retDist);
         }
     }
-    printf("\n- - - - - - - - - - - - - - - - \n");
+    printf("- - - - - - - - - - - - - - - - \n");
 
     printf("[MAIN] Starting search with only columns in memory\n");
     printf("[MAIN] Search string: %s\n", T.c_str());
