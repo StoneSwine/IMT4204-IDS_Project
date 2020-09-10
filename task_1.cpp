@@ -3,10 +3,6 @@
 #include <algorithm>    // std::min
 #include <vector>
 
-
-// #define DEBUG = 0
-
-
 #ifdef DEBUG
 
 #include <iomanip>
@@ -41,7 +37,7 @@ auto DPSearchWithFullMatrix(const string &p, const string &T, const int k) {
         }
         if (M[m - 1][j] <= k && M[m - 1][j] < minDist) {
             minDist = M[m - 1][j];
-        }
+       }
     }
 
 #ifdef DEBUG

@@ -2,8 +2,9 @@
 
 ## Installation: 
 ```bash
-cmake . 
-make
+cmake .                   # Debug information disabled
+cmake -DDEFINE_DEBUG=ON . # Debug information enabled
+make 
 ./task_1
 ```
  
@@ -14,31 +15,18 @@ make
 ## Example output
 ```txt
 [MAIN] Starting search with full matrix in memory
-[MAIN] Search string: annealing
-[DPSWFM]: Pattern --> Annual
-[DPSWFM]: Size of data-structure: 344 B
-[MAIN]: ed(Annual,annealing)=2
-[DPSWFM]: Pattern --> Gral
+[MAIN] Search string: student
+[DPSWFM]: Pattern --> tuned
 [DPSWFM]: Size of data-structure: 248 B
-[MAIN]: ed(Gral,annealing)=2
-[DPSWFM]: Pattern --> Neal
-[DPSWFM]: Size of data-structure: 248 B
-[MAIN]: ed(Neal,annealing)=1
-[DPSWFM]: Pattern --> ThisPatternIsWayTooDifferent
-[DPSWFM]: Size of data-structure: 1400 B
-
+[MAIN]: ed(tuned,student)=2
+[DPSWFM]: Pattern --> ThisIsTooDifferent
+[DPSWFM]: Size of data-structure: 768 B
 - - - - - - - - - - - - - - - - 
 [MAIN] Starting search with only columns in memory
-[MAIN] Search string: annealing
-[DPSWOC]: Pattern --> Annual
-[DPSWOC]: Size of data-structure: 36 B
-[MAIN]: ed(Annual,annealing)=2
-[DPSWOC]: Pattern --> Gral
-[DPSWOC]: Size of data-structure: 28 B
-[MAIN]: ed(Gral,annealing)=2
-[DPSWOC]: Pattern --> Neal
-[DPSWOC]: Size of data-structure: 28 B
-[MAIN]: ed(Neal,annealing)=1
-[DPSWOC]: Pattern --> ThisPatternIsWayTooDifferent
-[DPSWOC]: Size of data-structure: 124 B
+[MAIN] Search string: student
+[DPSWOC]: Pattern --> tuned
+[DPSWOC]: Size of data-structure: 32 B
+[MAIN]: ed(tuned,student)=2
+[DPSWOC]: Pattern --> ThisIsTooDifferent
+[DPSWOC]: Size of data-structure: 84 B
 ```
