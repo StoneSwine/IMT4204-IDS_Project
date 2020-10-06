@@ -17,13 +17,13 @@ using namespace std;
  */
 int main() {
     // Variables
-    uint sigma ASCII;  // Length of the alphabet
-    string patterns[] = {"annual", "SomethingTooDifferent"}; // P[m]/i
+    uint8_t sigma ASCII;  // Length of the alphabet
+    string patterns[] = {"annual", "SomethingTooDifferent"};// P[m]/i
     string T = "annealing"; // T[n]/j
-    uint k = 2;           // amount of allowed differences
+    uint8_t k = 2;           // amount of allowed differences
 
     int score;
-    uint Pv, Mv, Ph, Mh, Xv, Xh;
+    uint64_t Pv, Mv, Ph, Mh, Xv, Xh;
 
     // Process all the patterns
     for (const auto &P : patterns) {
@@ -34,20 +34,21 @@ int main() {
          * O(ASCII + m) time.
          * Formula (5)
          */
-        uint Peq[sigma];
+        uint64_t Peq[sigma];
+        uint64_t Eq;
         for (uint s = 0; s < sigma; ++s) {
             Peq[s] = 0;
         }
         for (uint j = 0; j < m; ++j) {
-            Peq[P[j]] |= (1u << (j));
+            Peq[P[j]] |= (1ull << (j));
         }
         /*
          * initialize variables
          * 32 bit word (uint32_t) m <= 32.
          * Formula (6)
          */
-        Pv = (~0u); // 1
-        Mv = 0u;    // 0
+        Pv = (~0ull); // 1
+        Mv = 0ull;    // 0
         score = m;
 
         for (int j = 1; j <= n; ++j) {
@@ -64,7 +65,7 @@ int main() {
              * Step 1: (Mv, Pv) Dv_{j-1} are used to compute (Mh, Ph) Dh_{i}
              * Formula (8,10)
              */
-            uint8_t Eq = Peq[T[j - 1]];
+            Eq = Peq[T[j - 1]];
             Xv = Eq | Mv;
             Xh = (((Eq & Pv) + Pv) ^ Pv) | Eq;
 
@@ -83,9 +84,9 @@ int main() {
             /*
              * Score is checked in between the steps (bottom horizontal delta)
              */
-            if (Ph & (1u << (m - 1))) {
+            if (Ph & (1ull << (m - 1))) {
                 score += 1;
-            } else if (Mh & (1u << (m - 1))) {
+            } else if (Mh & (1ull << (m - 1))) {
                 score -= 1;
             }
 
@@ -102,8 +103,8 @@ int main() {
              * Formula (4a)
              */
 
-            Ph <<= 1u;
-            Mh <<= 1u;
+            Ph <<= 1ull;
+            Mh <<= 1ull;
 
             Pv = Mh | ~(Xv | Ph);
             Mv = Ph & Xv;
