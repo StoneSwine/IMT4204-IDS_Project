@@ -44,7 +44,7 @@ bool DPSearchWithFullMatrix(const string &P, const string &T, const uint k) {
         }
         if (M[m - 1][j] <= k) {
             printf("\t[DPSWOC]: Match found for %s and %s, at pos. %d with the cost %d\n", P.c_str(), T.c_str(),
-                   j - 1, k);
+                   j - 1, M[m - 1][j]);
             match = true;
         }
     }
@@ -116,7 +116,7 @@ bool DPSearchWithOnlyColumns(const string &P, const string &T, const uint k) {
 
         if (Cpr[m - 1] <= k) {
             printf("\t[DPSWOC]: Match found for %s and %s, at pos. %d with the cost %d\n", P.c_str(), T.c_str(),
-                   j - 1, k);
+                   j - 1, Cpr[m - 1]);
             match = true;
         }
         swap(C, Cpr);
@@ -133,8 +133,8 @@ bool DPSearchWithOnlyColumns(const string &P, const string &T, const uint k) {
 
 
 int main() {
-    string patterns[] = {"tuned", "ThisIsTooDifferent"}; // Patterns (IDS DB)
-    string T = "student"; // Search string
+    string patterns[] = {"annual", "SomethingTooDifferent"}; // Patterns (IDS DB)
+    string T = "annealing"; // Search string
     uint k = 2; // amount of differences
 
     printf("[MAIN] Starting search with full matrix in memory\n");

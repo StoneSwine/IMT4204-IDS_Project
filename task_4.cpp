@@ -16,94 +16,109 @@ using namespace std;
  * @return
  */
 int main() {
-    // Misc variables
-    uint8_t delta ASCII;   // Length of the alphabet
-    string patterns[] = {"tuned", "ThisIsTooDifferent"}; // P[m]/i --> tuned
-    string T = "student"; // T[n]/j
-    uint k = 2;         // amount of allowed differences
+    // Variables
+    uint sigma ASCII;  // Length of the alphabet
+    string patterns[] = {"annual", "SomethingTooDifferent"}; // P[m]/i
+    string T = "annealing"; // T[n]/j
+    uint k = 2;           // amount of allowed differences
 
     int score;
-
-    /*
-     * Step 0: initialize deltas:
-     * Horizontal delta: Dh[i,j] at (i,j) as C[i,j] - C[i,j-1]
-     * Vertical delta:   Dv[i,j] as C[i,j] - C[i-1,j] for all (i,j) in [1,m]x[1,n]
-     */
-    uint32_t Pv;
-    uint32_t Ph;
-    uint32_t Mv;
-    uint32_t Mh;
-    uint32_t Xv;
-    uint32_t Xh;
+    uint Pv, Mv, Ph, Mh, Xv, Xh;
 
     // Process all the patterns
     for (const auto &P : patterns) {
         bool match = false;
         auto m = P.size(), n = T.size();
         /*
-         * Step 1 - Alphabet preprocessing
+         * Step 0 - Alphabet preprocessing
          * O(ASCII + m) time.
          * Formula (5)
          */
-        uint8_t Peq[delta];
-        for (u_char s = 0; s < delta; ++s) {
+        uint Peq[sigma];
+        for (uint s = 0; s < sigma; ++s) {
             Peq[s] = 0;
         }
-        for (u_char i : P) {
-            Peq[i] = 1;
+        for (uint j = 0; j < m; ++j) {
+            Peq[P[j]] |= (1u << (j));
         }
-
         /*
-         * Step 2 - initialize variables
+         * initialize variables
          * 32 bit word (uint32_t) m <= 32.
          * Formula (6)
          */
-        Pv = ~(~0u << m);
-        Mv = 0;
+        Pv = (~0u); // 1
+        Mv = 0u;    // 0
         score = m;
 
         for (int j = 1; j <= n; ++j) {
+
+#ifdef DEBUG
+            cout << "[DEBUG]: STAGE 0" << endl;
+            cout << "\tj_:" << j-1 << endl;
+            cout << "\tTi:" << T[j-1] << endl;
+            cout << "\tPv:" << bitset<64>(Pv) << endl;
+            cout << "\tMv:" << bitset<64>(Mv) << endl;
+#endif
+
             /*
-             * Step 3 - The X-factors
+             * Step 1: (Mv, Pv) Dv_{j-1} are used to compute (Mh, Ph) Dh_{i}
              * Formula (8,10)
              */
-
             uint8_t Eq = Peq[T[j - 1]];
             Xv = Eq | Mv;
             Xh = (((Eq & Pv) + Pv) ^ Pv) | Eq;
 
-            // Formula (4b)
-            // Formula (7)
-            Ph = Mv | ~(Xh | Pv);
-            Mh = Pv & Xh;
+            Ph = Mv | ~(Xh | Pv); // Formula (4b)
+            Mh = Pv & Xh;         // Formula (7)
 
 
-            if (Ph & (1u << (m - 1u))) {
+#ifdef DEBUG
+            cout << "[DEBUG]: STAGE 1" << endl;
+            cout << "\tXv:" << bitset<64>(Xv) << endl;
+            cout << "\tXh:" << bitset<64>(Xh) << endl;
+            cout << "\tEq:" << (u_char) Eq << endl;
+
+#endif
+
+            /*
+             * Score is checked in between the steps (bottom horizontal delta)
+             */
+            if (Ph & (1u << (m - 1))) {
                 score += 1;
-            } else if (Mh & (1u << (m - 1u))) {
+            } else if (Mh & (1u << (m - 1))) {
                 score -= 1;
             }
 
-            // Formula (4a)
+#ifdef DEBUG
+            cout << "[DEBUG]: score:" << endl;
+            cout << "\tPh:" << bitset<64>(Ph) << endl;
+            cout << "\tMh:" << bitset<64>(Mh) << endl;
+            cout << "\tmd:" << bitset<64>((1u << (m - 1))) << endl;
+
+#endif
+
+            /*
+             * Step 2: (Mh, Ph) Dh_{i-1} are used to compute (Mv, Pv) Dv_{j}
+             * Formula (4a)
+             */
+
             Ph <<= 1u;
-            Ph <<= 1u;
+            Mh <<= 1u;
+
             Pv = Mh | ~(Xv | Ph);
             Mv = Ph & Xv;
 
             if (score <= k) {
                 printf("[MAIN]: Match found for %s and %s, at pos. %d with the cost %d\n", P.c_str(), T.c_str(),
-                       j - 1, k);
+                       j - 1, score);
                 match = true;
             }
+
 #ifdef DEBUG
-            cout << "[DEBUG]" << endl;
-            cout << "\tPv:" << bitset<32>(Pv) << endl;
-            cout << "\tPh:" << bitset<32>(Ph) << endl;
-            cout << "\tMv:" << bitset<32>(Mv) << endl;
-            cout << "\tMh:" << bitset<32>(Mh) << endl;
-            cout << "\tXv:" << bitset<32>(Xv) << endl;
-            cout << "\tXh:" << bitset<32>(Xh) << endl;
-            cout << "[DEBUG]" << endl;
+            cout << "[DEBUG]: STAGE 2" << endl;
+            cout << "\tPv:" << bitset<64>(Pv) << endl;
+            cout << "\tMv:" << bitset<64>(Mv) << endl;
+            cout << "\tSc:" << score << endl << endl;
 
 #endif
 
